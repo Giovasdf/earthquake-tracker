@@ -3,29 +3,32 @@ import { RouterLink, RouterView } from 'vue-router';
 </script>
 
 <template>
-  <header class="bg-gray-800 text-white shadow-md">
-    <div class="container mx-auto flex items-center justify-between py-4 px-6">
+  <div class="min-h-screen flex flex-col bg-gray-100 text-gray-800">
+    <!-- Header -->
+    <header class="bg-gray-800 text-white shadow-md">
+      <div class="container mx-auto flex justify-between items-center py-4 px-6">
+        <h1 class="text-xl font-bold">
+          Earthquake Tracker
+        </h1>
+        <nav class="flex space-x-4">
+          <RouterLink to="/" class="hover:text-primary transition-colors" active-class="font-bold underline">
+            Home
+          </RouterLink>
+          <RouterLink to="/about" class="hover:text-primary transition-colors" active-class="font-bold underline">
+            About
+          </RouterLink>
+        </nav>
+      </div>
+    </header>
 
-      <nav class="flex space-x-6">
-        <RouterLink to="/" class="hover:text-primary transition-colors" active-class="font-bold underline">
-          Home
-        </RouterLink>
-        <RouterLink to="/about" class="hover:text-primary transition-colors" active-class="font-bold underline">
-          About
-        </RouterLink>
-      </nav>
-    </div>
-  </header>
+    <!-- Main Content -->
+    <main class="flex-grow container mx-auto py-8 px-6">
+      <RouterView />
+    </main>
 
-  <main class="container mx-auto my-8 px-6">
-    <RouterView />
-  </main>
-
-  <footer class="bg-gray-800 text-white text-center py-4">
-    <p>
-      &copy; {{ new Date().getFullYear() }} Earthquake Tracker | Powered by Vue 3 and Leaflet
-    </p>
-  </footer>
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white text-center py-4">
+      <p>&copy; {{ new Date().getFullYear() }} Earthquake Tracker</p>
+    </footer>
+  </div>
 </template>
-
-<style></style>
