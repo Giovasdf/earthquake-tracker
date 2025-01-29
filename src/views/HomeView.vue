@@ -1,52 +1,58 @@
 <template>
-  <div>
-    <!-- Título -->
-    <section class="text-center mb-8">
-      <h1 class="text-3xl font-bold mb-2">Monitoreo de Terremotos</h1>
-      <p class="text-gray-600">Consulta los últimos terremotos registrados en tiempo real.</p>
-    </section>
+  <div class="flex flex-col h-screen">
+    <!-- Row 1: Mapa -->
+    <div class="h-1/2 bg-white relative">
+      <EarthquakeMap :earthquakes="earthquakes" :selectedEarthquake="selectedEarthquake" />
+    </div>
 
-    <!-- Contenido principal -->
-    <section class="grid grid-cols-1 md:grid-cols-2 gap-8">
-      <!-- Mapa -->
-      <div class="bg-white p-4 rounded-lg shadow-md">
-        <EarthquakeMap :earthquakes="earthquakes" />
-      </div>
-
-      <!-- Lista de terremotos -->
-      <div class="bg-white p-4 rounded-lg shadow-md">
-        <h2 class="text-xl font-bold mb-4">Últimos terremotos</h2>
-        <ul>
-          <li v-for="quake in earthquakes" :key="quake.id" class="mb-4 border-b pb-2 last:border-b-0">
-            <p><strong>Lugar:</strong> {{ quake.properties.place }}</p>
-            <p><strong>Magnitud:</strong> {{ quake.properties.mag }}</p>
-            <p>
-              <strong>Fecha:</strong>
-              {{ new Date(quake.properties.time).toLocaleString() }}
-            </p>
-          </li>
-        </ul>
-      </div>
-    </section>
+    <!-- Row 2: Lista de terremotos -->
+    <div class="h-1/2 bg-white p-4 overflow-y-auto">
+      <h2 class="text-xl font-bold mb-4">Últimos terremotos</h2>
+      <ul>
+        <li v-for="quake in limitedEarthquakes" :key="quake.id"
+          class="mb-4 border-b pb-2 last:border-b-0 cursor-pointer hover:bg-gray-100 transition"
+          @click="selectEarthquake(quake)">
+          <p><strong>Lugar:</strong> {{ quake.properties.place }}</p>
+          <p><strong>Magnitud:</strong> {{ quake.properties.mag }}</p>
+          <p>
+            <strong>Fecha:</strong>
+            {{ new Date(quake.properties.time).toLocaleString() }}
+          </p>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
 <script>
 import EarthquakeMap from '../components/EarthquakeMap.vue';
-
 import { fetchEarthquakes } from '../services/earthquakeApi';
 
 export default {
   components: { EarthquakeMap },
   data() {
     return {
-      earthquakes: [],
+      earthquakes: [], // Lista completa de terremotos
+      selectedEarthquake: null, // Terremoto seleccionado
     };
   },
+  computed: {
+    limitedEarthquakes() {
+      return this.earthquakes.slice(0, 20); // Limita la lista a los últimos 20 terremotos
+    },
+  },
   async mounted() {
-    const data = await fetchEarthquakes('2023-01-01', 4.5);
-    this.earthquakes = data;
+    const data = await fetchEarthquakes('2023-01-01', 4.5); // Llama a la API para obtener datos
+    this.earthquakes = data.sort((a, b) => b.properties.time - a.properties.time); // Orden descendente por fecha
+  },
+  methods: {
+    selectEarthquake(quake) {
+      this.selectedEarthquake = quake; // Actualiza el terremoto seleccionado
+    },
   },
 };
-
 </script>
+
+<style scoped>
+/* No se requieren estilos adicionales ya que el diseño se maneja con clases de TailwindCSS */
+</style>

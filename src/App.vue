@@ -14,9 +14,7 @@ import { RouterLink, RouterView } from 'vue-router';
           <RouterLink to="/" class="hover:text-primary transition-colors" active-class="font-bold underline">
             Home
           </RouterLink>
-          <RouterLink to="/about" class="hover:text-primary transition-colors" active-class="font-bold underline">
-            About
-          </RouterLink>
+
         </nav>
       </div>
     </header>
@@ -26,9 +24,6 @@ import { RouterLink, RouterView } from 'vue-router';
       <RouterView />
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-white text-center py-4">
-      <p>&copy; {{ new Date().getFullYear() }} Earthquake Tracker</p>
-    </footer>
+
   </div>
 </template>
