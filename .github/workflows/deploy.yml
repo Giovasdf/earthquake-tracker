@@ -1,0 +1,40 @@
+name: Deploy Vue 3 App to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main # Cambia a tu rama principal si es diferente
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🛎️ Checkout del código
+        uses: actions/checkout@v4
+
+      - name: 🏗️ Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+
+      - name: 📦 Instalar dependencias
+        run: npm install
+
+      - name: 🔧 Configurar variables de entorno
+        run: echo "VITE_MAPBOX_API_KEY=${{ secrets.VITE_MAPBOX_API_KEY }}" >> $GITHUB_ENV
+
+      - name: 🚀 Construir la aplicación
+        run: npm run build
+        env:
+          GITHUB_PAGES: true # Indica que el build es para GitHub Pages
+
+      - name: 🚢 Desplegar en GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages # Desplegar en la rama gh-pages
+          folder: dist # Carpeta con los archivos de producción
