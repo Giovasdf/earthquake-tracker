@@ -10,10 +10,15 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
-  base: '/earthquake-tracker/', // 🔥 Esto es clave para GitHub Pages
+  base: '/earthquake-tracker/', // 🔥 Asegura que está correctamente configurado
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
-    manifest: true, // 🔥 Genera un manifest.json para evitar problemas de rutas
+    manifest: true,
+    rollupOptions: {
+      input: {
+        main: './index.html', // 🔥 Asegura que el build tome index.html correctamente
+      },
+    },
   },
 })
