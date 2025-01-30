@@ -43,6 +43,8 @@ export default {
   },
   async mounted() {
     const data = await fetchEarthquakes('2023-01-01', 4.5); // Llama a la API para obtener datos
+    console.log('Datos de terremotos:', data); // <-- Verifica si hay datos
+
     this.earthquakes = data.sort((a, b) => b.properties.time - a.properties.time); // Orden descendente por fecha
   },
   methods: {
